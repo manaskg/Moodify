@@ -1,13 +1,10 @@
 import React from "react";
 import BrandLogo from "../../shared/components/BrandLogo";
-import { useAuth } from "../../auth/hooks/useAuth";
+import UserProfileMenu from "../../shared/components/UserProfileMenu";
 import { Link } from "react-router";
-import { SignOut, User } from "@phosphor-icons/react";
 import "../style/navbar.scss";
 
 export default function Navbar({ currentMood = "happy" }) {
-  const { user, handleLogout } = useAuth();
-
   const getMoodBadge = (mood) => {
     switch (mood) {
       case "happy":
@@ -26,21 +23,23 @@ export default function Navbar({ currentMood = "happy" }) {
   return (
     <header className="moodify-navbar">
       <div className="moodify-navbar__inner">
+        {/* Left Column: Brand Logo + Segmented Nav Links */}
         <div className="moodify-navbar__left">
-          <Link to="/" style={{ textDecoration: "none" }}>
+          <Link to="/" style={{ textDecoration: "none" }} className="navbar-brand-link">
             <BrandLogo size="md" />
           </Link>
+
+          <nav className="moodify-navbar__nav-links">
+            <Link to="/" className="nav-link">
+              Overview
+            </Link>
+            <Link to="/detect" className="nav-link nav-link--active">
+              Studio
+            </Link>
+          </nav>
         </div>
 
-        <nav className="moodify-navbar__nav-links">
-          <Link to="/" className="nav-link">
-            Overview
-          </Link>
-          <Link to="/detect" className="nav-link nav-link--active">
-            Studio
-          </Link>
-        </nav>
-
+        {/* Center Column: Perfectly Symmetrical Mood Indicator */}
         <div className="moodify-navbar__center">
           <div className="mood-indicator-pill">
             <span className="mood-emoji">{badge.emoji}</span>
@@ -48,23 +47,9 @@ export default function Navbar({ currentMood = "happy" }) {
           </div>
         </div>
 
+        {/* Right Column: User Profile Menu */}
         <div className="moodify-navbar__right">
-          <div className="user-profile-badge">
-            <div className="user-avatar">
-              <User size={16} weight="bold" />
-            </div>
-            <span className="username">{user?.username || "Guest"}</span>
-          </div>
-
-          <button
-            type="button"
-            className="btn btn--secondary btn--sm btn--icon"
-            onClick={handleLogout}
-            title="Sign out"
-            aria-label="Sign out"
-          >
-            <SignOut size={18} />
-          </button>
+          <UserProfileMenu />
         </div>
       </div>
     </header>

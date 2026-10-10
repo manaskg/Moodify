@@ -1,10 +1,13 @@
 import React from "react";
 import { Link } from "react-router";
 import BrandLogo from "../../shared/components/BrandLogo";
+import UserProfileMenu from "../../shared/components/UserProfileMenu";
+import { useAuth } from "../../auth/hooks/useAuth";
 import { Play, ArrowRight, MusicNotes, Camera, Sliders } from "@phosphor-icons/react";
 import "../style/landing.scss";
 
 export default function Landing() {
+  const { user } = useAuth();
   return (
     <div className="landing-page">
       {/* Precision Background SVG Harmonic Contour Lines */}
@@ -48,9 +51,13 @@ export default function Landing() {
           </nav>
 
           <div className="landing-nav__actions">
-            <Link to="/login" className="btn btn--secondary btn--sm btn--pill">
-              Sign In
-            </Link>
+            {user ? (
+              <UserProfileMenu />
+            ) : (
+              <Link to="/login" className="btn btn--secondary btn--sm btn--pill">
+                Sign In
+              </Link>
+            )}
             <Link to="/detect" className="btn btn--primary btn--sm btn--pill">
               <Play size={14} weight="fill" />
               Open Studio
@@ -79,10 +86,17 @@ export default function Landing() {
             <Play size={18} weight="fill" />
             Launch Studio
           </Link>
-          <Link to="/login" className="btn btn--secondary btn--lg btn--pill">
-            <span>Explore Demo</span>
-            <ArrowRight size={18} />
-          </Link>
+          {user ? (
+            <a href="#moods" className="btn btn--secondary btn--lg btn--pill">
+              <span>Explore Playlists</span>
+              <ArrowRight size={18} />
+            </a>
+          ) : (
+            <Link to="/login" className="btn btn--secondary btn--lg btn--pill">
+              <span>Explore Demo</span>
+              <ArrowRight size={18} />
+            </Link>
+          )}
         </div>
       </section>
 
